@@ -1,0 +1,46 @@
+﻿@model PasswordRepository.Core.Account
+
+@{
+	ViewBag.Title = "Details";
+}
+
+<h2>Account Details</h2>
+
+@using (Html.BeginForm("SaveAsync", "Accounts", FormMethod.Post))
+{
+	@Html.HiddenFor(model => model.Id)
+	@Html.Partial("_AccountForm", Model ?? new PasswordRepository.Core.Account())
+}
+
+@section scripts {
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function () {
+			$('form').submit(function (event) {
+				event.preventDefault();
+
+				var formData = $(this).serialize();
+
+				$.ajax({
+					url: $(this).attr('action'),
+					type: $(this).attr('method'),
+					data: formData,
+					success: function (response) {
+						if (response.success)
+						{
+							window.location.href = '@Url.Action("IndexAsync", "Accounts")';
+							alert('Account saved successfully.');
+						}
+						else
+						{
+							alert('Failed to save the account.');
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			});
+		});
+	</script>
+}

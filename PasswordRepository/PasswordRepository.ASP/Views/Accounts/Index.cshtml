@@ -1,0 +1,112 @@
+﻿@model IEnumerable<PasswordRepository.Core.Account>
+
+@{
+	ViewBag.Title = "Password Repository";
+}
+
+<h2>Password Repository</h2>
+
+<p>
+	@Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table" id="passwordTable">
+	<thead>
+		<tr>
+			<th>Account name</th>
+			<th>Last updated</th>
+			<th>Comments</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr data-id="@item.Id"
+				data-accountname="@item.AccountName"
+				data-lastupdated="@item.LastUpdated"
+				data-comments="@item.Comments"
+				data-password="@item.Password"
+				class="passwordRow">
+				<td>@item.AccountName</td>
+				<td>@item.LastUpdated.ToString()</td>
+				<td>@item.Comments</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning editLink", data_id = item.Id, data_accountname = item.AccountName, data_lastupdated = item.LastUpdated, data_comments = item.Comments, data_password = item.Password, onclick = "return;" })
+					@Html.ActionLink("Delete", "DeleteAsync", new { id = item.Id }, new { @class = "btn btn-danger deleteLink", data_accountname = item.AccountName, data_lastupdated = item.LastUpdated, data_comments = item.Comments, data_password = item.Password, onclick = "return;" })
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@section scripts {
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script defer>
+		$(function () {
+			$('.deleteLink').click(function (event) {
+				event.preventDefault();
+
+				var deleteUrl = $(this).attr('href');
+				var accountId = $(this).data('id');
+				var accountName = $(this).data('accountname');
+				var lastUpdated = $(this).data('lastupdated');
+				var comments = $(this).data('comments');
+				var password = $(this).data('password');
+				if (confirm('Are you sure you want to delete this item?')) {
+					$.ajax({
+						url: deleteUrl,
+						type: 'POST',
+						data:
+						{
+							id: accountId,
+							AccountName: accountName,
+							LastUpdated: lastUpdated,
+							Comments: comments,
+							Password: password
+						},
+						success: function (response) {
+							if (response.success) {
+								window.location.href = '@Url.Action("IndexAsync", "Accounts")';
+								alert('Account deleted successfully.');
+							} else {
+								alert('Failed to delete the account.');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText);
+						}
+					});
+				}
+			});
+
+			function handleEdit(event) {
+				event.preventDefault();
+
+				var editUrl = $(this).attr('href') || $(this).data('href');
+				var accountId = $(this).data('id');
+				var accountName = $(this).data('accountname');
+				var lastUpdated = $(this).data('lastupdated');
+				var comments = $(this).data('comments');
+				var password = $(this).data('password');
+
+				window.location.href = editUrl +
+					'?id=' + accountId +
+					'&AccountName=' + encodeURIComponent(accountName) +
+					'&LastUpdated=' + encodeURIComponent(lastUpdated) +
+					'&Comments=' + encodeURIComponent(comments) +
+					'&Password=' + encodeURIComponent(password);
+			}
+
+			$(document).on('click', '.editLink', handleEdit);
+
+			$(document).on('dblclick', '#passwordTable tr', function () {
+				var editLink = $(this).find('.editLink');
+				if (editLink.length) {
+					editLink.trigger('click');
+				}
+			});
+		});
+	</script>
+}

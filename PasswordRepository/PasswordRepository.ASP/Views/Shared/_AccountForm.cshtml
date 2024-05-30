@@ -1,0 +1,30 @@
+@model PasswordRepository.Core.Account
+
+<div>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.AccountName)
+		</dt>
+		<dd>
+			@Html.TextBoxFor(model => model.AccountName, new { @class = "form-control" })
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Comments)
+		</dt>
+		<dd>
+			@Html.TextAreaFor(model => model.Comments, new { @class = "form-control" })
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Password)
+		</dt>
+		<dd>
+			<input type="text" class="form-control" name="Password" value="@Model.Password" />
+		</dd>
+	</dl>
+</div>
+
+<p>
+	<button type="submit" class="btn btn-warning">Save</button>
+	@Html.ActionLink("Back to List", "IndexAsync", null, new { @class = "btn btn-default" })
+</p>

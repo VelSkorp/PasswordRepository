@@ -1,0 +1,77 @@
+﻿<local:BaseDialogUserControl x:Class="PasswordRepository.WPF.AccountManageBox"
+							 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+							 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+							 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+							 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+							 xmlns:local="clr-namespace:PasswordRepository.WPF"
+							 mc:Ignorable="d" >
+
+	<Grid d:DataContext="{x:Static local:ManageAccountDialogDesignModel.Instance}"
+		  Background="{StaticResource ForegroundLightBrush}">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		
+		<AdornerDecorator>
+			
+			<StackPanel Orientation="Horizontal"
+						Margin="0 0 0 5">
+
+				<TextBox Tag="Account name" 
+						 Name="AccountName"
+						 Style="{StaticResource NotEmptyValidation}"
+						 FontSize="{StaticResource FontSizeLarge}"
+						 Text="{Binding AccountName}" />
+
+				<TextBox Tag="Comments" 
+						 Name="Comments"
+						 FontSize="{StaticResource FontSizeLarge}"
+						 Text="{Binding Comments}" />
+
+				<TextBox Tag="Password" 
+						 Name="Password"
+						 Style="{StaticResource NotEmptyValidation}"
+						 FontSize="{StaticResource FontSizeLarge}"
+						 Text="{Binding Password}" />
+
+			</StackPanel>
+		</AdornerDecorator>
+		
+		<StackPanel Orientation="Horizontal"
+					Grid.Row="1"
+					HorizontalAlignment="Center">
+			
+			<Button Content="Save" 
+					IsDefault="True"
+					FontSize="{StaticResource FontSizeRegular}"
+					HorizontalAlignment="Center" 
+					Command="{Binding SaveCommand}"
+					local:IsBusyProperty.Value="{Binding SaveIsRunning}">
+				<Button.Style>
+					<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+						<Setter Property="IsEnabled" Value="False"/>
+						<Style.Triggers>
+							<MultiDataTrigger>
+								<MultiDataTrigger.Conditions>
+									<Condition Binding="{Binding ElementName=AccountName, Path=(Validation.HasError)}" Value="False"/>
+									<Condition Binding="{Binding ElementName=Password, Path=(Validation.HasError)}" Value="False"/>
+								</MultiDataTrigger.Conditions>
+								<MultiDataTrigger.Setters>
+									<Setter Property="IsEnabled" Value="True"/>
+								</MultiDataTrigger.Setters>
+							</MultiDataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
+
+			<Button Content="Cancel" 
+					IsCancel="True"
+					FontSize="{StaticResource FontSizeRegular}"
+					HorizontalAlignment="Center" 
+					Command="{Binding CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BaseDialogUserControl}}}"/>
+		</StackPanel>
+	</Grid>
+</local:BaseDialogUserControl>
