@@ -1,9 +1,32 @@
 ﻿@{
-	ViewBag.Title = "About";
+	ViewBag.Title = "Password Repository is a simple application designed to securely store and manage passwords.";
 }
 <main aria-labelledby="title">
-	<h2 id="title">@ViewBag.Title.</h2>
-	<h3>@ViewBag.Message</h3>
+	<h3 id="title">@ViewBag.Title</h3>
+	<p>@ViewBag.Message</p>
 
-	<p>Use this area to provide additional information.</p>
+	<h4>Features</h4>
+	<h5>Dual UI Fronts</h5>
+	<ul>
+		<li>ASP.NET MVC website</li>
+		<li>WPF Windows application</li>
+	</ul>
+	<h5>Secure Password Storage</h5>
+	<ul>
+		<li>Passwords are hashed before saving to the database using AES</li>
+		<li>Passwords are unhashed when retrieved for display using AES</li>
+	</ul>
+	<h5>CRUD Operations</h5>
+	<ul>
+		<li>Insert, Edit, Delete password entries</li>
+	</ul>
+	<h5>Real-Time Updates</h5>
+	<ul>
+		<li>ASP.NET MVC website performs all operations using AJAX</li>
+	</ul>
+	<h5>Detailed Information</h5>
+	<ul>
+		<li>List view with account names, last update date, comments</li>
+		<li>Detail view for creating and updating accounts</li>
+	</ul>
 </main>

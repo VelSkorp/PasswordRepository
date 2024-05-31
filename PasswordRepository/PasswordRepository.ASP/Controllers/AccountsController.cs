@@ -14,7 +14,7 @@ namespace PasswordRepository.ASP
 
 		public ActionResult About()
 		{
-			ViewBag.Message = "Password Repository description page.";
+			ViewBag.Message = "It consists of two user interfaces: an ASP.NET MVC website and a WPF Windows application. Both interfaces interact with a shared C# codebase and use MS SQL Server with Entity Framework 6 (EF6) for data persistence. The application supports the secure hashing of passwords and provides CRUD operations for password management.";
 			return View();
 		}
 
